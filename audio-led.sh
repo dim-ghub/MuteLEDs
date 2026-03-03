@@ -6,7 +6,7 @@
 CODEC_DEVICE="/dev/snd/hwC1D0"
 
 log() {
-	:
+	echo "[$(date '+%H:%M:%S')] $*" >>/tmp/audio-led.log
 }
 
 led_on() {
@@ -34,10 +34,10 @@ update_led() {
 		return
 	fi
 
-	MUTE_STATUS=$(pactl get-sink-mute "$SINK_ID" 2>/dev/null)
+	MUTE_STATUS=$(wpctl get-volume $SINK_ID)
 	log "Mute status: $MUTE_STATUS"
 
-	if echo "$MUTE_STATUS" | grep -q "Mute: yes"; then
+	if echo "$MUTE_STATUS" | grep -q "\[MUTED\]"; then
 		led_on
 	else
 		led_off
