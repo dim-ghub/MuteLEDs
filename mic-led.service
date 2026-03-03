@@ -1,0 +1,18 @@
+[Unit]
+Description=Mic LED Controller
+After=pipewire.service wireplumber.service sound.target
+Requires=wireplumber.service
+
+[Service]
+Type=simple
+ExecStart=/home/dim/.local/bin/mic-led.sh
+Restart=on-failure
+RestartSec=5
+
+Environment="PULSE_RUNTIME_PATH=/run/user/%U/pulse/"
+Environment="DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/%U/bus"
+
+ExecStartPre=/bin/sleep 3
+
+[Install]
+WantedBy=default.target
